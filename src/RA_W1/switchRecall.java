@@ -1,4 +1,4 @@
-package PAW1;
+package RA_W1;
 
 import java.util.Scanner;
 
