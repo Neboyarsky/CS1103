@@ -9,7 +9,8 @@ public class Dog {
     //methods area
 
     /**
-     *  @param size - dog weight in pounds, must be positive integer
+     * Just defining a normal dog that has a size, a breed, and a name
+     * @param size - dog weight in pounds, must be positive integer
      * @param name - dog name, must be a String
      * @param breed - dog breed, must be a String
      */

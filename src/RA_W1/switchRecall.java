@@ -4,6 +4,10 @@ import java.util.Scanner;
 
 public class switchRecall {
     public static void main(String[] args) {
+
+        /**
+        Sample usage of util.Scanner:
+         */
         Scanner kbd = new Scanner(System.in);
         System.out.println("Enter number from 1 to 9");
         int N = kbd.nextInt();
