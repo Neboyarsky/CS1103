@@ -1,4 +1,4 @@
-package RA_W1;
+package RA_W1.stuff;
 
 public class Array_experiments {
     public static void main(String[] args) {

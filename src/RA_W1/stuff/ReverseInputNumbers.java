@@ -1,4 +1,4 @@
-package RA_W1;
+package RA_W1.stuff;
 
 import Lab2.TextIO;
 
