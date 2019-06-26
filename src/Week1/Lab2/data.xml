@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" ID="https://www.wrike.com" entityID="https://www.wrike.com">
+    <md:SPSSODescriptor AuthnRequestsSigned="true" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>MIIDXjCCAkYCCQCZWZZqtiDcAjANBgkqhkiG9w0BAQsFADBxMQswCQYDVQQGEwJV
+                        UzELMAkGA1UECAwCQ0ExFjAUBgNVBAcMDU1vdW50YWluIFZpZXcxFTATBgNVBAoM
+                        DCJXcmlrZSwgSW5jIjEOMAwGA1UECwwFV3Jpa2UxFjAUBgNVBAMMDXd3dy53cmlr
+                        ZS5jb20wHhcNMTgwMTE4MTQ1NDE0WhcNMjAwMTE4MTQ1NDE0WjBxMQswCQYDVQQG
+                        EwJVUzELMAkGA1UECAwCQ0ExFjAUBgNVBAcMDU1vdW50YWluIFZpZXcxFTATBgNV
+                        BAoMDCJXcmlrZSwgSW5jIjEOMAwGA1UECwwFV3Jpa2UxFjAUBgNVBAMMDXd3dy53
+                        cmlrZS5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCPnSeSJ2h7
+                        iaRlqHJ3PQvwR09ZQ8pVjyywrO88kw93339u8ameQsPnMQw3gM0rKF7iHpf4s68C
+                        PjFdkfyTguzBf+1NKw5pySQ9XE9u18EOX+Sin+PUe68O5HO6VFKHd8e+3vjX6XOb
+                        t7pmpJKX+E1pGNRjkTRF1Z894TMon54bP/XSmHR03+TFMbbO5sSReI1DnMGeh5T4
+                        CMVldRmn2zxg8KGwDF8aOb9lBnf7PwlcXFE75cfmaXeUIeTGhbG06kNk/h5pWITv
+                        Ud9ObMYRn35jpD/imLTkQspUIMWrmnOpJQgAtFSULP9eozfWtHX92IF1B+MRokVQ
+                        190dd3Efn8frAgMBAAEwDQYJKoZIhvcNAQELBQADggEBABkM7XnilN1LGUwOcfSw
+                        bbapIzuxhX3GtnXIzRAzqkHKREIMdX1m1mCRSy8712wRbNsUzX0b1Mlcy6Ei/3/U
+                        NKGYyzZC4TwLepFR1dbfwhT+I4i8McKgyZMZ/118id0z2TxCzZ8C/jchiQd5tJx2
+                        gE0M7+5iMauCHhlhtoCNq3peDHjmOEkaXGvx6I9LLa1wVSAM5vmUEvdUdjSnOQC4
+                        le//eJn8mQOA1IfXP52m9mjDPe1yOD0wyLmZjAjeQTRKsuC703f15/IhgtvpXErl
+                        WtuWn0L5dL+TSCGeumxCvZx41AvwZK9YRN12L/8M2obuwSRS/wh21E8YAPyTSNjq
+                        oqw=
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://www.wrike.com/saml/SingleLogout"/>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://www.wrike.com/saml/SingleLogout"/>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName</md:NameIDFormat>
+        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://www.wrike.com/saml/SSO" index="0" isDefault="true"/>
+        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://www.wrike.com/saml/SSO" index="1"/>
+        <md:AttributeConsumingService index="0" isDefault="true">
+            <md:ServiceName xmlns:xml="http://www.w3.org/XML/1998/namespace" xml:lang="en">Wrike</md:ServiceName>
+            <md:RequestedAttribute Name="firstName"/>
+            <md:RequestedAttribute Name="lastName"/>
+        </md:AttributeConsumingService>
+    </md:SPSSODescriptor>
+</md:EntityDescriptor>
