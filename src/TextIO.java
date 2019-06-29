@@ -1,10 +1,12 @@
-package Week1.RA_W1;
 
-import javax.swing.*;
+
 import java.io.*;
 import java.util.IllegalFormatException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  * TextIO provides a set of static methods for reading and writing text.  By default, it reads
