@@ -60,6 +60,8 @@ public class MyArrayOperations {
      * the index in the array where it occurs. If the value is not found,
      * return -1. Precondition: The array must be sorted into increasing
      * order.
+     * loIndex and hiIndex specify the piece of array to be searched.
+     * To search the entire array, use 0 and arrayName.length - 1 here.
      */
     static int binarySearch(int[] A, int loIndex, int hiIndex, int value) {
         if (loIndex > hiIndex) {

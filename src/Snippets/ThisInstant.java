@@ -1,4 +1,4 @@
-package Week1;
+package Snippets;
 
 import java.util.Calendar;
 
