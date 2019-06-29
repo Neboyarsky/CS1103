@@ -1,13 +1,11 @@
 package Snippets;
-
-import Week1.Excercises.TextIO;
-
+/*
 public class TryCatch {
     try {
         // some routines
     }
-        catch (IllegalArgumentException e) {
+        catch (IllegalArgumentException error) {
         TextIO.putln("Sorry, I can't find a solution.");
-        TextIO.putln(e.getMessage());
+        TextIO.putln(error.getMessage());
     }
-}
+}*/

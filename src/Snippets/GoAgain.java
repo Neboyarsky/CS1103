@@ -1,7 +1,6 @@
 package Snippets;
 
-import Week1.Excercises.TextIO;
-
+/*
 public class GoAgain {
     boolean goAgain;
     do {
@@ -10,4 +9,4 @@ public class GoAgain {
         goAgain = TextIO.getlnBoolean();
 
     } while (goAgain);
-}
+}*/
