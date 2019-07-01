@@ -1,6 +1,4 @@
-package Week1.Lab1;
-
-import java.util.Scanner;
+package Week1.Labs.Lab1;
 
 public class StudentTest {
     public static void main(String[] args) {

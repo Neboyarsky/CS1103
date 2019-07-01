@@ -3,7 +3,7 @@
  * it is actually spring_saml_metadata.xml file stored on a web-service
  */
 
-package Week1.Lab2;
+package Week1.Labs.Lab2;
 
 import java.io.*;
 import java.net.URL;

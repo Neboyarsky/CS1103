@@ -1,7 +1,7 @@
 package Week2;
 
 
-import Week1.RA_W1.TextIO;
+import Week2.LinkedDataStructures.TextIO;
 
 /**
  * This program lists the steps in the solution of the TowersOfHanoi

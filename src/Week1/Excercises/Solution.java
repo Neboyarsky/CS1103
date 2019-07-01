@@ -1,5 +1,7 @@
 package Week1.Excercises;
 
+import Week1.RA_W1.stuff.TextIO;
+
 import static Week1.Excercises.Equation.root;
 
 /**

@@ -1,6 +1,5 @@
 package Week1.RA_W1.stuff;
 
-import Week1.Lab2.TextIO;
 
 public class ReverseInputNumbers {
     public static void main(String[] args) {

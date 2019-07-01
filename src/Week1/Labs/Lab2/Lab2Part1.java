@@ -6,7 +6,7 @@
 
 //API sorting took 16 milliseconds to sort 1 000 000 items
 
-package Week1.Lab2;
+package Week1.Labs.Lab2;
 
 import java.time.Instant;
 import java.util.Arrays;

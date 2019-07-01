@@ -5,7 +5,7 @@ public class GoAgain {
     boolean goAgain;
     do {
         TextIO.putln();
-        TextIO.put("Do you want to solve another equation? ");
+        TextIO.put("Do you want to do it again? ");
         goAgain = TextIO.getlnBoolean();
 
     } while (goAgain);

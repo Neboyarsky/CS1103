@@ -1,4 +1,4 @@
-package Week1.Lab1;
+package Week1.Labs.Lab1;
 
 public class DeductionProblem {
     private int x, y, answer;

@@ -7,16 +7,16 @@ package Week2.LinkedDataStructures;
  * of the list are displayed.   Note that any list item input by
  * the user is converted to lower case.
  */
-public class ListDemo {
+public class IntListDemo {
 
 
     public static void main(String[] args) {
 
-        StringList list;    // The list of strings.
+        IntList list;    // The list of strings.
 
-        String usersItem;   // An item typed in by the user.
+        int usersItem;   // An item typed in by the user.
 
-        String[] elements;  // The elements in the list, obtained by
+        int[] elements;  // The elements in the list, obtained by
         //    calling list.getElements().  This
         //    is used to display the list contents
         //    to the user.
@@ -26,7 +26,7 @@ public class ListDemo {
 
         done = false;
 
-        list = new StringList();  // Start with an empty list.
+        list = new IntList();  // Start with an empty list.
 
         while (done == false) {
 
@@ -37,7 +37,7 @@ public class ListDemo {
                 TextIO.putln("\n\nThere are no elements in the list.");
             else {
                 TextIO.putln("\n\nElements of the list:");
-                for (String element : elements) TextIO.putln("   " + element);
+                for (int element : elements) TextIO.putln("   " + element);
             }
 
             // Display a menu of available operations, and get the
@@ -48,6 +48,7 @@ public class ListDemo {
             TextIO.putln("    2.  Delete an item.");
             TextIO.putln("    3.  Find an item.");
             TextIO.putln("    4.  Exit from this program.");
+            TextIO.putln("    5.  Count sum of elements");
             TextIO.put("Enter the number of your choice:  ");
             int menuChoice = TextIO.getlnInt();
 
@@ -58,28 +59,33 @@ public class ListDemo {
             switch (menuChoice) {
                 case 1:  // Insert an item.
                     TextIO.put("\nEnter the item to be added:  ");
-                    usersItem = TextIO.getln().trim().toLowerCase();
+                    usersItem = TextIO.getInt();
                     list.insert(usersItem);
                     TextIO.putln("OK");
                     break;
                 case 2:  // Delete an item.
                     TextIO.put("\nEnter the item to be deleted:  ");
-                    usersItem = TextIO.getln().trim().toLowerCase();
-                    if ( list.delete(usersItem) )
+                    usersItem = TextIO.getInt();
+                    if ( list.isPresent(usersItem) ) {
                         TextIO.putln("OK");
+                        list.delete(usersItem);
+                    }
                     else
                         TextIO.putln("That item was not found in the list.");
                     break;
                 case 3:  // Check whether an item occurs in the list.
                     TextIO.put("\nEnter an item to find:  ");
-                    usersItem = TextIO.getln().trim().toLowerCase();
-                    if ( list.find(usersItem) )
+                    usersItem = TextIO.getInt();
+                    if ( list.isPresent(usersItem) )
                         TextIO.putln("Yes, that item is in the list.");
                     else
                         TextIO.putln("No, that item is not in the list.");
                     break;
                 case 4:  // Exit from this program.
                     done = true;
+                    break;
+                case 5:  // count sum of elements
+                    TextIO.put("\nThe sum of list elements is " + list.addToSum());
                     break;
                 default:
                     TextIO.putln("Illegal choice.");
