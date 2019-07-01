@@ -30,7 +30,7 @@ public class SimpleRandomSentences {
      * optionally adds another sentence glued to the original
      * one with a conjunction
      */
-    static void randomSentence() {
+    private static void randomSentence() {
         randomNounPhrase();
         randomVerbPhrase();
         if (Math.random() > 0.75) {
@@ -44,7 +44,7 @@ public class SimpleRandomSentences {
      * With 1/4 probability generates a noun phrase with
      * a determiner
      */
-    static void randomNounPhrase() {
+    private static void randomNounPhrase() {
 
         if (Math.random() > 0.75)
             System.out.print(" " + randomItem(proper_noun));
@@ -65,7 +65,7 @@ public class SimpleRandomSentences {
      * Generates a verb to be added to the noun,
      * with certain probability
      */
-    static void randomVerbPhrase() {
+    private static void randomVerbPhrase() {
 
         if (Math.random() > 0.75)
             System.out.print(" " + randomItem(intransitive_verb));
@@ -84,7 +84,7 @@ public class SimpleRandomSentences {
     /**
      * Selects a random element from an array of strings
     */
-    static String randomItem(String[] listOfStrings) {
+    private static String randomItem(String[] listOfStrings) {
         return listOfStrings[(int) (Math.random() * listOfStrings.length)];
 
     }
