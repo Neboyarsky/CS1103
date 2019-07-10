@@ -8,10 +8,11 @@ public class Tape {
     private Cell currentCell;
 
     /**
+     * Constructor.
      * Creates a pseudo-empty tape - it initially consists of a single cell that contains a blank space.
      * The current cell pointer should point to it.
      */
-    public void Tape() {
+    public Tape() {
         Cell newCell = new Cell();
         newCell.content = ' ';  // empty character
         newCell.next = null;    // previous cell
@@ -56,7 +57,7 @@ public class Tape {
             newCell.next = currentCell;
             currentCell.prev = newCell;
         }
-        currentCell = currentCell.next;
+        currentCell = currentCell.prev;
     }
 
     /**
@@ -74,7 +75,7 @@ public class Tape {
             newCell.prev = currentCell;
             currentCell.next = newCell;
         }
-        currentCell = currentCell.prev;
+        currentCell = currentCell.next;
     }
 
     /**
