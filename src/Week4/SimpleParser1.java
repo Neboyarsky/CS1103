@@ -1,4 +1,4 @@
-package Week3._Samples;
+package Week4;
 
 
 /*
@@ -17,6 +17,8 @@ package Week3._Samples;
     considered an error.
  */
 
+import Week3._Samples.TextIO;
+
 public class SimpleParser1 {
 
 
@@ -34,27 +36,27 @@ public class SimpleParser1 {
     public static void main(String[] args) {
 
         while (true) {
-            TextIO.putln("\n\nEnter a fully parenthesized expression,");
-            TextIO.putln("or press return to end.");
-            TextIO.put("\n?  ");
-            TextIO.skipBlanks();
-            if ( TextIO.peek() == '\n' )
+            Week3._Samples.TextIO.putln("\n\nEnter a fully parenthesized expression,");
+            Week3._Samples.TextIO.putln("or press return to end.");
+            Week3._Samples.TextIO.put("\n?  ");
+            Week3._Samples.TextIO.skipBlanks();
+            if ( Week3._Samples.TextIO.peek() == '\n' )
                 break;
             try {
                 double val = expressionValue();
-                TextIO.skipBlanks();
-                if ( TextIO.peek() != '\n' )
+                Week3._Samples.TextIO.skipBlanks();
+                if ( Week3._Samples.TextIO.peek() != '\n' )
                     throw new ParseError("Extra data after end of expression.");
-                TextIO.getln();
-                TextIO.putln("\nValue is " + val);
+                Week3._Samples.TextIO.getln();
+                Week3._Samples.TextIO.putln("\nValue is " + val);
             }
             catch (ParseError e) {
-                TextIO.putln("\n*** Error in input:    " + e.getMessage());
-                TextIO.putln("*** Discarding input:  " + TextIO.getln());
+                Week3._Samples.TextIO.putln("\n*** Error in input:    " + e.getMessage());
+                Week3._Samples.TextIO.putln("*** Discarding input:  " + Week3._Samples.TextIO.getln());
             }
         }
 
-        TextIO.putln("\n\nDone.");
+        Week3._Samples.TextIO.putln("\n\nDone.");
 
     } // end main()
 
@@ -64,29 +66,29 @@ public class SimpleParser1 {
      * @throws ParseError if the input contains a syntax error
      */
     private static double expressionValue() throws ParseError {
-        TextIO.skipBlanks();
-        if ( Character.isDigit(TextIO.peek()) ) {
+        Week3._Samples.TextIO.skipBlanks();
+        if ( Character.isDigit(Week3._Samples.TextIO.peek()) ) {
             // The next item in input is a number, so the expression
             // must consist of just that number.  Read and return
             // the number.
-            return TextIO.getDouble();
+            return Week3._Samples.TextIO.getDouble();
         }
-        else if ( TextIO.peek() == '(' ) {
+        else if ( Week3._Samples.TextIO.peek() == '(' ) {
             // The expression must be of the form
             //         "(" <expression> <operator> <expression> ")"
             // Read all these items, perform the operation, and
             // return the result.
-            TextIO.getAnyChar();  // Read the "("
+            Week3._Samples.TextIO.getAnyChar();  // Read the "("
             double leftVal = expressionValue();  // Read and evaluate first operand.
             char op = getOperator();             // Read the operator.
             double rightVal = expressionValue(); // Read and evaluate second operand.
-            TextIO.skipBlanks();
-            if ( TextIO.peek() != ')' ) {
+            Week3._Samples.TextIO.skipBlanks();
+            if ( Week3._Samples.TextIO.peek() != ')' ) {
                 // According to the rule, there must be a ")" here.
                 // Since it's missing, throw a ParseError.
                 throw new ParseError("Missing right parenthesis.");
             }
-            TextIO.getAnyChar();  // Read the ")"
+            Week3._Samples.TextIO.getAnyChar();  // Read the ")"
             switch (op) {   //  Apply the operator and return the result.
                 case '+':  return leftVal + rightVal;
                 case '-':  return leftVal - rightVal;
@@ -98,7 +100,7 @@ public class SimpleParser1 {
         }
         else {
             throw new ParseError("Encountered unexpected character, \"" +
-                    TextIO.peek() + "\" in input.");
+                    Week3._Samples.TextIO.peek() + "\" in input.");
         }
     } // end expressionValue()
 
@@ -108,8 +110,8 @@ public class SimpleParser1 {
      * read it and return it.  Otherwise, throw a ParseError.
      */
     static char getOperator() throws ParseError {
-        TextIO.skipBlanks();
-        char op = TextIO.peek();
+        Week3._Samples.TextIO.skipBlanks();
+        char op = Week3._Samples.TextIO.peek();
         if ( op == '+' || op == '-' || op == '*' || op == '/' ) {
             TextIO.getAnyChar();
             return op;

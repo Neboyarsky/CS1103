@@ -1,5 +1,7 @@
-package Week3._Samples;
+package Week4;
 
+
+import Week3._Samples.TextIO;
 
 /**
     This program evaluates standard expressions typed in
@@ -36,26 +38,26 @@ public class SimpleParser2 {
     public static void main(String[] args) {
 
         while (true) {
-            TextIO.putln("\n\nEnter an expression, or press return to end.");
-            TextIO.put("\n?  ");
-            TextIO.skipBlanks();
-            if ( TextIO.peek() == '\n' )
+            Week3._Samples.TextIO.putln("\n\nEnter an expression, or press return to end.");
+            Week3._Samples.TextIO.put("\n?  ");
+            Week3._Samples.TextIO.skipBlanks();
+            if ( Week3._Samples.TextIO.peek() == '\n' )
                 break;
             try {
                 double val = expressionValue();
-                TextIO.skipBlanks();
-                if ( TextIO.peek() != '\n' )
+                Week3._Samples.TextIO.skipBlanks();
+                if ( Week3._Samples.TextIO.peek() != '\n' )
                     throw new ParseError("Extra data after end of expression.");
-                TextIO.getln();
-                TextIO.putln("\nValue is " + val);
+                Week3._Samples.TextIO.getln();
+                Week3._Samples.TextIO.putln("\nValue is " + val);
             }
             catch (ParseError e) {
-                TextIO.putln("\n*** Error in input:    " + e.getMessage());
-                TextIO.putln("*** Discarding input:  " + TextIO.getln());
+                Week3._Samples.TextIO.putln("\n*** Error in input:    " + e.getMessage());
+                Week3._Samples.TextIO.putln("*** Discarding input:  " + Week3._Samples.TextIO.getln());
             }
         }
 
-        TextIO.putln("\n\nDone.");
+        Week3._Samples.TextIO.putln("\n\nDone.");
 
     } // end main()
 
@@ -65,28 +67,28 @@ public class SimpleParser2 {
      * @throws ParseError if the input contains a syntax error
      */
     private static double expressionValue() throws ParseError {
-        TextIO.skipBlanks();
+        Week3._Samples.TextIO.skipBlanks();
         boolean negative;  // True if there is a leading minus sign.
         negative = false;
-        if (TextIO.peek() == '-') {
-            TextIO.getAnyChar();
+        if (Week3._Samples.TextIO.peek() == '-') {
+            Week3._Samples.TextIO.getAnyChar();
             negative = true;
         }
         double val;  // Value of the expression.
         val = termValue();
         if (negative)
             val = -val;
-        TextIO.skipBlanks();
-        while ( TextIO.peek() == '+' || TextIO.peek() == '-' ) {
+        Week3._Samples.TextIO.skipBlanks();
+        while ( Week3._Samples.TextIO.peek() == '+' || Week3._Samples.TextIO.peek() == '-' ) {
             // Read the next term and add it to or subtract it from
             // the value of previous terms in the expression.
-            char op = TextIO.getAnyChar();
+            char op = Week3._Samples.TextIO.getAnyChar();
             double nextVal = termValue();
             if (op == '+')
                 val += nextVal;
             else
                 val -= nextVal;
-            TextIO.skipBlanks();
+            Week3._Samples.TextIO.skipBlanks();
         }
         return val;
     } // end expressionValue()
@@ -97,20 +99,20 @@ public class SimpleParser2 {
      * @throws ParseError if the input contains a syntax error
      */
     private static double termValue() throws ParseError {
-        TextIO.skipBlanks();
+        Week3._Samples.TextIO.skipBlanks();
         double val;
         val = factorValue();
-        TextIO.skipBlanks();
-        while ( TextIO.peek() == '*' || TextIO.peek() == '/' ) {
+        Week3._Samples.TextIO.skipBlanks();
+        while ( Week3._Samples.TextIO.peek() == '*' || Week3._Samples.TextIO.peek() == '/' ) {
             // Read the next factor, and multiply or divide
             // the value-so-far by the value of this factor.
-            char op = TextIO.getAnyChar();
+            char op = Week3._Samples.TextIO.getAnyChar();
             double nextVal = factorValue();
             if (op == '*')
                 val *= nextVal;
             else
                 val /= nextVal;
-            TextIO.skipBlanks();
+            Week3._Samples.TextIO.skipBlanks();
         }
         return val;
     } // end termValue()
@@ -121,18 +123,18 @@ public class SimpleParser2 {
      * @throws ParseError if the input contains a syntax error
      */
     private static double factorValue() throws ParseError {
-        TextIO.skipBlanks();
-        char ch = TextIO.peek();
+        Week3._Samples.TextIO.skipBlanks();
+        char ch = Week3._Samples.TextIO.peek();
         if ( Character.isDigit(ch) ) {
             // The factor is a number.
-            return TextIO.getDouble();
+            return Week3._Samples.TextIO.getDouble();
         }
         else if ( ch == '(' ) {
             // The factor is an expression in parentheses.
-            TextIO.getAnyChar();  // Read the "("
+            Week3._Samples.TextIO.getAnyChar();  // Read the "("
             double val = expressionValue();
-            TextIO.skipBlanks();
-            if ( TextIO.peek() != ')' )
+            Week3._Samples.TextIO.skipBlanks();
+            if ( Week3._Samples.TextIO.peek() != ')' )
                 throw new ParseError("Missing right parenthesis.");
             TextIO.getAnyChar();  // Read the ")"
             return val;
