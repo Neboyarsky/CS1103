@@ -3,6 +3,8 @@ package Week5.PA5;
 import java.io.*;
 import java.util.*;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
+
 public class Dictionary {
     public static void main(String args[]) throws FileNotFoundException{
         try {
@@ -111,7 +113,7 @@ public class Dictionary {
      * without selecting a file, the return value is null.
      */
     static File getInputFileNameFromUser() {
-        JFileChooser fileDialog = new JFileChooser();
+        JFileChooser fileDialog = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         fileDialog.setDialogTitle("Select File for Input");
         int option = fileDialog.showOpenDialog(null);
         if (option != JFileChooser.APPROVE_OPTION)
