@@ -1,4 +1,4 @@
-package Week6;
+package Week6.Files;
 
 public class currentDir {
     public static void main(String[] args) {

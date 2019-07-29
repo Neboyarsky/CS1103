@@ -1,4 +1,4 @@
-package Week6;
+package Week6.Files;
 
 import java.io.*;
 import java.util.ArrayList;
