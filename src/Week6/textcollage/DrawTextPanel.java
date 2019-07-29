@@ -13,7 +13,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JColorChooser;
@@ -25,34 +28,39 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-
 /**
  * A panel that contains a large drawing area where strings
  * can be drawn.  The strings are represented by objects of
  * type DrawTextItem.  An input box under the panel allows
  * the user to specify what string will be drawn when the
  * user clicks on the drawing area.
+ *
+ * NEW FEATURES:
+ * 1. added support for right click to undo (remove item)
+ * 2. added support for undo as many levels as allowed
+ * 3. each left click puts text with random background color, border, font, etc.
+ * 4. save and open command supports all new features
+ */
+/**
+ * @author Anonymous For assessment purpose
+ *
  */
 public class DrawTextPanel extends JPanel  {
-	
 	// As it now stands, this class can only show one string at at
 	// a time!  The data for that string is in the DrawTextItem object
 	// named theString.  (If it's null, nothing is shown.  This
 	// variable should be replaced by a variable of type
 	// ArrayList<DrawStringItem> that can store multiple items.
-	
-	private DrawTextItem theString;  // change to an ArrayList<DrawTextItem> !
+	private ArrayList<DrawTextItem> theStrings;  // changed to an ArrayList<DrawTextItem> !
 
 	private Color currentTextColor = Color.BLACK;  // Color applied to new strings.
-
 	private Canvas canvas;  // the drawing area.
 	private JTextField input;  // where the user inputs the string that will be added to the canvas
 	private SimpleFileChooser fileChooser;  // for letting the user select files
 	private JMenuBar menuBar; // a menu bar with command that affect this panel
 	private MenuHandler menuHandler; // a listener that responds whenever the user selects a menu command
 	private JMenuItem undoMenuItem;  // the "Remove Item" command from the edit menu
-	
-	
+
 	/**
 	 * An object of type Canvas is used for the drawing area.
 	 * The canvas simply displays all the DrawTextItems that
@@ -61,18 +69,18 @@ public class DrawTextPanel extends JPanel  {
 	private class Canvas extends JPanel {
 		Canvas() {
 			setPreferredSize( new Dimension(800,600) );
-			setBackground(Color.LIGHT_GRAY);
+			setBackground(Color.WHITE);
 			setFont( new Font( "Serif", Font.BOLD, 24 ));
 		}
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
+			((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
-			if (theString != null)
-				theString.draw(g);
+			if (theStrings != null)
+				for (DrawTextItem s: theStrings)
+					s.draw(g);
 		}
-	} // up until here, no changes
-	
+	}
 	/**
 	 * An object of type MenuHandler is registered as the ActionListener
 	 * for all the commands in the menu bar.  The MenuHandler object
@@ -80,11 +88,10 @@ public class DrawTextPanel extends JPanel  {
 	 * from the menu.
 	 */
 	private class MenuHandler implements ActionListener {
-		public void actionPerformed(ActionEvent event) {
-			doMenuCommand( event.getActionCommand());
+		public void actionPerformed(ActionEvent evt) {
+			doMenuCommand( evt.getActionCommand());
 		}
 	}
-
 	/**
 	 * Creates a DrawTextPanel.  The panel has a large drawing area and
 	 * a text input box where the user can specify a string.  When the
@@ -112,7 +119,6 @@ public class DrawTextPanel extends JPanel  {
 			}
 		} );
 	}
-		
 	/**
 	 * This method is called when the user clicks the drawing area.
 	 * A new string is added to the drawing area.  The center of
@@ -120,6 +126,10 @@ public class DrawTextPanel extends JPanel  {
 	 * @param e the mouse event that was generated when the user clicked
 	 */
 	public void doMousePress( MouseEvent e ) {
+		if (e.isMetaDown()) { //right click to remove an item
+			removeItem();
+			return;
+		}
 		String text = input.getText().trim();
 		if (text.length() == 0) {
 			input.setText("Hello World!");
@@ -127,21 +137,43 @@ public class DrawTextPanel extends JPanel  {
 		}
 		DrawTextItem s = new DrawTextItem( text, e.getX(), e.getY() );
 		s.setTextColor(currentTextColor);  // Default is null, meaning default color of the canvas (black).
-		
-//   SOME OTHER OPTIONS THAT CAN BE APPLIED TO TEXT ITEMS:
-//		s.setFont( new Font( "Serif", Font.ITALIC + Font.BOLD, 12 ));  // Default is null, meaning font of canvas.
-//		s.setMagnification(3);  // Default is 1, meaning no magnification.
-//		s.setBorder(true);  // Default is false, meaning don't draw a border.
-//		s.setRotationAngle(25);  // Default is 0, meaning no rotation.
-//		s.setTextTransparency(0.3); // Default is 0, meaning text is not at all transparent.
-//		s.setBackground(Color.BLUE);  // Default is null, meaning don't draw a background area.
-//		s.setBackgroundTransparency(0.7);  // Default is 0, meaning background is not transparent.
-		
-		theString = s;  // Set this string as the ONLY string to be drawn on the canvas!
+		//   SOME OTHER OPTIONS THAT CAN BE APPLIED TO TEXT ITEMS:
+		//
+		int randomChoice = (int)(Math.random()*5);
+		int fontStyle;
+		switch (randomChoice) {
+			case 0: fontStyle = Font.ITALIC; break;
+			case 1: fontStyle = Font.BOLD; break;
+			default: fontStyle = Font.ITALIC + Font.BOLD;
+		}
+		s.setFont( new Font( "Serif", fontStyle, (int)(Math.random()*12+8) ));
+
+		//create different types of magnification
+		s.setMagnification((int)(Math.random()*4+1));
+
+		//create random border
+		if (Math.random() > 0.3)
+			s.setBorder(true);
+
+		//create random rotation angle (0 to 360)
+		s.setRotationAngle(Math.random()*360);
+
+		//create random text transparency (0 to 1)
+		s.setTextTransparency(Math.random()*0.25);
+
+		//create random background color
+		if (Math.random() > 0.5)
+			s.setBackground(new Color((float)Math.random(), (float)Math.random(), (float)Math.random()));
+
+		//create random background transparency (0 to 1)
+		s.setBackgroundTransparency(Math.random()*0.90+0.10);
+
+		if (theStrings == null)
+			theStrings = new ArrayList<DrawTextItem>();
+		theStrings.add(s);  // Set this string as the ONLY string to be drawn on the canvas!
 		undoMenuItem.setEnabled(true);
 		canvas.repaint();
 	}
-	
 	/**
 	 * Returns a menu bar containing commands that affect this panel.  The menu
 	 * bar is meant to appear in the same window that contains this panel.
@@ -149,13 +181,11 @@ public class DrawTextPanel extends JPanel  {
 	public JMenuBar getMenuBar() {
 		if (menuBar == null) {
 			menuBar = new JMenuBar();
-			
 			String commandKey; // for making keyboard accelerators for menu commands
 			if (System.getProperty("mrj.version") == null)
 				commandKey = "control ";  // command key for non-Mac OS
 			else
 				commandKey = "meta ";  // command key for Mac OS
-			
 			JMenu fileMenu = new JMenu("File");
 			menuBar.add(fileMenu);
 			JMenuItem saveItem = new JMenuItem("Save...");
@@ -170,7 +200,6 @@ public class DrawTextPanel extends JPanel  {
 			JMenuItem saveImageItem = new JMenuItem("Save Image...");
 			saveImageItem.addActionListener(menuHandler);
 			fileMenu.add(saveImageItem);
-			
 			JMenu editMenu = new JMenu("Edit");
 			menuBar.add(editMenu);
 			undoMenuItem.addActionListener(menuHandler); // undoItem was created in the constructor
@@ -180,7 +209,6 @@ public class DrawTextPanel extends JPanel  {
 			JMenuItem clearItem = new JMenuItem("Clear");
 			clearItem.addActionListener(menuHandler);
 			editMenu.add(clearItem);
-			
 			JMenu optionsMenu = new JMenu("Options");
 			menuBar.add(optionsMenu);
 			JMenuItem colorItem = new JMenuItem("Set Text Color...");
@@ -190,33 +218,28 @@ public class DrawTextPanel extends JPanel  {
 			JMenuItem bgColorItem = new JMenuItem("Set Background Color...");
 			bgColorItem.addActionListener(menuHandler);
 			optionsMenu.add(bgColorItem);
-			
 		}
 		return menuBar;
 	}
-	
 	/**
 	 * Carry out one of the commands from the menu bar.
 	 * @param command the text of the menu command.
 	 */
 	private void doMenuCommand(String command) {
 		if (command.equals("Save...")) { // save all the string info to a file
-			JOptionPane.showMessageDialog(this, "Sorry, the Save command is not implemented.");
+			saveFile();
 		}
 		else if (command.equals("Open...")) { // read a previously saved file, and reconstruct the list of strings
-			JOptionPane.showMessageDialog(this, "Sorry, the Open command is not implemented.");
+			openFile();
 			canvas.repaint(); // (you'll need this to make the new list of strings take effect)
 		}
 		else if (command.equals("Clear")) {  // remove all strings
-			theString = null;   // Remove the ONLY string from the canvas.
+			theStrings = null;   // Remove the ONLY string from the canvas.
 			undoMenuItem.setEnabled(false);
 			canvas.repaint();
 		}
-		else if (command.equals("Remove Item")) { // remove the most recently added string
-			theString = null;   // Remove the ONLY string from the canvas.
-			undoMenuItem.setEnabled(false);
-			canvas.repaint();
-		}
+		else if (command.equals("Remove Item"))
+			removeItem();
 		else if (command.equals("Set Text Color...")) {
 			Color c = JColorChooser.showDialog(this, "Select Text Color", currentTextColor);
 			if (c != null)
@@ -248,11 +271,114 @@ public class DrawTextPanel extends JPanel  {
 					throw new Exception("PNG format not supported (this shouldn't happen!).");
 			}
 			catch (Exception e) {
-				JOptionPane.showMessageDialog(this, 
+				JOptionPane.showMessageDialog(this,
 						"Sorry, an error occurred while trying to save the image:\n" + e);
 			}
 		}
 	}
-	
+	/**
+	 * When Command equal "Remove Item" remove the last item from the canvas one by one. Ctrl-Z and right click
+	 * are both supported.
+	 */
+	private void removeItem() {
+		if (theStrings.size() > 0)
+			theStrings.remove(theStrings.size()-1); // remove the most recently added string
+		if (theStrings.size() == 0)
 
+			undoMenuItem.setEnabled(false);
+		canvas.repaint();
+	}
+
+	/**
+	 * Save the current canvas into a text file
+	 */
+	private void saveFile() {
+		File saveAs = fileChooser.getOutputFile(this, "Save As", "Text Collage.txt");
+		try {
+			PrintWriter out = new PrintWriter(saveAs);
+			out.println("New text collage file");
+			out.println(canvas.getBackground().getRed());
+			out.println(canvas.getBackground().getGreen());
+			out.println(canvas.getBackground().getBlue());
+			if (theStrings != null)
+				for (DrawTextItem s: theStrings) {
+					out.println("theString:");
+					out.println(s.getString());
+					out.println(s.getX());
+					out.println(s.getY());
+					out.println(s.getFont().getName());
+					out.println(s.getFont().getStyle());
+					out.println(s.getFont().getSize());
+					out.println(s.getTextColor().getRed());
+					out.println(s.getTextColor().getGreen());
+					out.println(s.getTextColor().getBlue());
+					out.println(s.getTextTransparency());
+					if (s.getBackground() == null) {
+						out.println("-1");
+						out.println("-1");
+						out.println("-1");
+					}
+					else {
+						out.println(s.getBackground().getRed());
+						out.println(s.getBackground().getGreen());
+						out.println(s.getBackground().getBlue());
+					}
+					out.println(s.getBackgroundTransparency());
+					out.println(s.getBorder());
+					out.println(s.getMagnification());
+					out.println(s.getRotationAngle());
+				}
+			out.close();
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(this, "Can't write to the file \"" + saveAs + "\".");
+			System.out.println("Error message: " + e);
+		}
+	}
+
+	/**
+	 * Open a saved text file and read the background color as well as the text
+	 * strings.
+	 */
+	private void openFile() {
+		File openFile = fileChooser.getInputFile(this, "Open Saved File");
+		try {
+			Scanner in = new Scanner(openFile);
+			if (!in.nextLine().equals("New text collage file")) {
+				JOptionPane.showMessageDialog(this, "Not a valid file \"" + openFile + "\".");
+				return;
+			}
+			Color savedBg = new Color(in.nextInt(), in.nextInt(), in.nextInt());
+			ArrayList<DrawTextItem> newStrings = new ArrayList<DrawTextItem>();
+			DrawTextItem newItem;
+			in.nextLine();  //skip to the next line before read a new line
+			while (in.hasNext() && in.nextLine().equals("theString:")) {
+				newItem = new DrawTextItem(in.nextLine(),
+						in.nextInt(), in.nextInt());
+				in.nextLine();  //skip to the next line before read a new line
+				newItem.setFont(new Font(in.nextLine(), in.nextInt(), in.nextInt()));
+				newItem.setTextColor(new Color(in.nextInt(), in.nextInt(), in.nextInt()));
+				newItem.setTextTransparency(in.nextDouble());
+				int r = in.nextInt();
+				int g = in.nextInt();
+				int b = in.nextInt();
+				if (r == -1)
+					newItem.setBackground(null);
+				else
+					newItem.setBackground(new Color(r, g, b));
+				newItem.setBackgroundTransparency(in.nextDouble());
+				newItem.setBorder(in.nextBoolean());
+				newItem.setMagnification(in.nextDouble());
+				newItem.setRotationAngle(in.nextDouble());
+				in.nextLine();  //skip to the next line before read a new line
+				newStrings.add(newItem);
+			}
+			//if no exception occurred, replace the current background and strings
+			canvas.setBackground(savedBg);
+			theStrings = newStrings;
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(this, "Can't read the file \"" + openFile + "\".");
+			System.out.println("Error message: " + e);
+		}
+
+	}
 }
